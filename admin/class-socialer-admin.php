@@ -56,7 +56,7 @@ class Socialer_Admin {
 	}
 
 	public function settings_register() {
-		add_settings_section( 'socialer_section', 'Section Title', null, 'socialer_settings' );
+		add_settings_section( 'socialer_section', null, null, 'socialer_settings' );
 		add_settings_field( 'socialer_location', __( 'Diplay Location', $this->plugin_name ), array( $this, 'locationHTML' ), 'socialer_settings', 'socialer_section' );
 		
 		register_setting(
@@ -65,28 +65,39 @@ class Socialer_Admin {
 			array(
 				'type' 				=> 'string', 
 				'sanitize_callback' => 'sanitize_text_field',
-				'default' 			=> NULL,
+				'default' 			=> 0,
 			) 
 		);
 	}
 
 	public function locationHTML(){
 		?>
-			<select name="" id="">
-				<option value="left">Left</option>
-				<option value="right">Right</option>
+			<select name="socialer_location">
+				<option value="0" <?php selected( get_option('socialer_location'), '0' ) ?>>Default</option>
+				<option value="1" <?php selected( get_option('socialer_location'), '1' ) ?>>Top Left</option>
+				<option value="2" <?php selected( get_option('socialer_location'), '2' ) ?>>Top Right</option>
+				<option value="3" <?php selected( get_option('socialer_location'), '3' ) ?>>Top Center</option>
+				<option value="4" <?php selected( get_option('socialer_location'), '4' ) ?>>Middle Left</option>
+				<option value="5" <?php selected( get_option('socialer_location'), '5' ) ?>>Middle Right</option>
+				<option value="6" <?php selected( get_option('socialer_location'), '6' ) ?>>Bottom Left</option>
+				<option value="7" <?php selected( get_option('socialer_location'), '7' ) ?>>Bottom Right</option>
+				<option value="8" <?php selected( get_option('socialer_location'), '8' ) ?>>Bottom Center</option>
 			</select>
 		<?php
 	}
 
 	public function socialer_settings_html(){
 		?>
-			<form action="options.php" method="POST">
-				<?php 
-					do_settings_sections( 'socialer_settings' );
-					submit_button();
-				?>
-			</form>
+			<div class="wrap">
+				<h2>Socialer Settings</h2>
+				<form action="options.php" method="POST">
+					<?php 
+						settings_fields( 'socialer' );
+						do_settings_sections( 'socialer_settings' );
+						submit_button();
+					?>
+				</form>
+			</div>
 		<?php
 	}
 
